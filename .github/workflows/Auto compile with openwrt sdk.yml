@@ -50,7 +50,6 @@ jobs:
           echo "prerelease: ${prerelease}"
 
       - name: Prepare release
-        if: steps.check_version.outputs.has_update == 'true'
         run: |
           echo "## :mega:Update content" >> release.txt
           echo "![](https://img.shields.io/github/downloads/${{ env.passwall }}/${{steps.check_version.outputs.latest_version}}/total?style=flat-square)" >> release.txt
@@ -59,7 +58,6 @@ jobs:
           touch release.txt
 
       - name: Generate new tag & release
-        if: steps.check_version.outputs.has_update == 'true'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +71,6 @@ jobs:
   job_build_passwall:
     name: Build passwall [Luci ${{ matrix.luci_ver }}]
     needs: job_check
-    if: needs.job_check.outputs.has_update == 'true'
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -168,7 +165,6 @@ jobs:
 
 
   job_auto_compile:
-    if: ${{ needs.job_check.outputs.has_update == 'true' && needs.job_check.outputs.prerelease == 'false' }}
     needs: job_check
     runs-on: ubuntu-22.04
     name: build (${{ matrix.platform }})
