@@ -105,7 +105,7 @@ jobs:
         run: |
           wget ${{ matrix.sdk_url }}
           file_name=$(echo ${{ matrix.sdk_url }} | awk -F/ '{print $NF}')
-          mkdir sdk && tar --xzd -x -f $file_name -C ./sdk --strip-components=1
+          mkdir sdk && tar -xJf $file_name -C ./sdk --strip-components=1
           cd sdk
           echo "src-git base https://github.com/openwrt/openwrt.git;openwrt-${{ matrix.sdk_ver }}" > feeds.conf
           echo "src-git packages https://github.com/openwrt/packages.git;openwrt-${{ matrix.sdk_ver }}" >> feeds.conf
@@ -258,7 +258,7 @@ jobs:
         run: |
           wget ${{ matrix.url_sdk }}
           file_name=$(echo ${{matrix.url_sdk}} | awk -F/ '{print $NF}')
-          mkdir sdk && tar --xzd -x -f $file_name -C ./sdk --strip-components=1
+          mkdir sdk && tar -xJf $file_name -C ./sdk --strip-components=1
           cd sdk
 
       - name: SSH connection to Actions
